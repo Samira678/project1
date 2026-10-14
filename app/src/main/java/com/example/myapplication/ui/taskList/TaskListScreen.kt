@@ -1,9 +1,16 @@
 package com.example.myapplication.ui.taskList
 
+import android.R.attr.text
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +30,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.data.models.Task
+import com.example.myapplication.ui.components.AddDialog
 import com.example.myapplication.ui.components.DeleteDialog
 import com.example.myapplication.ui.components.EditDialog
 
@@ -53,8 +62,10 @@ fun TaskListScreen(viewModel: TaskListViewModel){
                     modifier = Modifier
                         .padding(10.dp)
                         .fillMaxSize(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
-                    //
+                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+                    onClick = {
+                        viewModel.switchExpend(it)
+                    }
                 ) {
                     Column(modifier = Modifier.padding(10.dp)){
                         Box(modifier = Modifier.fillMaxSize()){
@@ -65,9 +76,10 @@ fun TaskListScreen(viewModel: TaskListViewModel){
                             )
                             Row(Modifier
                                 .align (Alignment.TopEnd)){
-                                IconButton(onClick = {
-                                    viewModel.showDeleteDialog()
-                                    viewModel.selectTask(it)
+                                IconButton(
+                                    onClick = {
+                                        viewModel.showDeleteDialog()
+                                        viewModel.selectTask(it)
                                 }) {
                                     Icon(Icons.Filled.Delete, contentDescription = "Delete")
                                 }
@@ -78,6 +90,18 @@ fun TaskListScreen(viewModel: TaskListViewModel){
                                     Icon(Icons.Filled.Delete, contentDescription = "Edit")
                                 }
                             }
+                        }
+                        AnimatedVisibility(
+                            visible = it.expended,
+                            enter = fadeIn() + expandVertically (),
+                            exit = fadeOut() + shrinkVertically ()
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .fillMaxWidth(),
+                                text = it.text
+                            )
                         }
                     }
 
@@ -102,6 +126,18 @@ fun TaskListScreen(viewModel: TaskListViewModel){
 
         )
 
+    }
+    if(showAddDialog){
+        AddDialog(
+            {viewModel.hideAddDialog()},
+            {title, text} ->
+                val newTask = Task(
+                    id = 0,
+                    title = title,
+                    text = text,
+                    expended = true
+                )
+        ) { }
     }
 
 

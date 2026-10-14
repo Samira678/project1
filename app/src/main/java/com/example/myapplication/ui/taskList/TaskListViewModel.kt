@@ -6,11 +6,13 @@ import com.example.myapplication.data.models.Task
 import com.example.myapplication.data.repository.TaskRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TaskListViewModel (
     private val repository: TaskRepository = TaskRepository()
 ): ViewModel(){
+
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
     val tasks : StateFlow<List<Task>> = _tasks
     private val _task = MutableStateFlow<Task?>(null)
@@ -21,6 +23,20 @@ class TaskListViewModel (
     val showDeleteDialog: StateFlow<Boolean> = _showDeleteDialog
     private var _showUpdateDialog = MutableStateFlow(false)
     val showUpdateDialog: StateFlow<Boolean> = _showUpdateDialog
+
+    init {
+        loadTask()
+    }
+
+    fun switchExpend(switchedTask: Task){
+        _tasks.update {tasks ->
+            tasks.map{
+                if(it.id == switchedTask.id)
+                    it.copy(expended = !it.expended)
+                else it
+            }
+        }
+    }
 
     fun loadTask(){
         viewModelScope.launch {
