@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.taskList
 
 import android.R.attr.text
+import android.R.attr.title
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -119,8 +120,8 @@ fun TaskListScreen(viewModel: TaskListViewModel){
     }
     if(showUpdateDialog){
         EditDialog(
-            onDismiss ={viewModel.hideUpdateDialog()},
-            onUpdate = {updatedTask->
+            {viewModel.hideUpdateDialog()},
+            {updatedTask->
                 viewModel.editTask(updatedTask)},
             task!!
 
@@ -130,14 +131,16 @@ fun TaskListScreen(viewModel: TaskListViewModel){
     if(showAddDialog){
         AddDialog(
             {viewModel.hideAddDialog()},
-            {title, text} ->
+            { title, text ->
                 val newTask = Task(
                     id = 0,
                     title = title,
                     text = text,
                     expended = true
                 )
-        ) { }
+                viewModel.addTask(newTask)
+            }
+        )
     }
 
 
