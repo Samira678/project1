@@ -39,7 +39,7 @@ import com.example.myapplication.ui.components.EditDialog
 @Composable
 fun TaskListScreen(viewModel: TaskListViewModel){
     val tasks by viewModel.tasks.collectAsState()
-    val task by viewModel.tasks.collectAsState()
+
     val showAddDialog by viewModel.showAddDialog.collectAsState()
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
     val showUpdateDialog by viewModel.showUpdateDialog.collectAsState()

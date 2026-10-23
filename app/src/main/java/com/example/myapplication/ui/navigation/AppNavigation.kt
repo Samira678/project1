@@ -7,6 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.data.repository.TaskRepository
+import com.example.myapplication.ui.taskAdd.TaskAddScreen
+import com.example.myapplication.ui.taskAdd.TaskAddViewModel
+import com.example.myapplication.ui.taskEdit.TaskEditScreen
+import com.example.myapplication.ui.taskEdit.TaskEditViewModel
 import com.example.myapplication.ui.taskList.TaskListScreen
 import com.example.myapplication.ui.taskList.TaskListViewModel
 
@@ -26,9 +30,17 @@ fun AppNavigation() {
             )
         }
         composable("TaskAdd"){
+            TaskAddScreen(
+                navController,
+                TaskAddViewModel(repository)
+            )
 
         }
-        composable("TaskEdit"){
+        composable("TaskEdit"){ backStackEntry ->
+            TaskEditScreen(
+                navController,
+                TaskEditViewModel(it.repository)
+            )
 
         }
     }

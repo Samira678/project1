@@ -33,6 +33,10 @@ class TaskRepository {
         )
     }
 
+    fun getTask(taskId: Int): Task?{
+        return tasks.find {it.id == taskId }
+    }
+
     fun getAllTasks() : List<Task> = tasks.toList()
 
     fun addTask(Task: Task) {
