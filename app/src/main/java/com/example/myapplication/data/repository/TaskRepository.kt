@@ -1,53 +1,51 @@
 package com.example.myapplication.data.repository
 
 import com.example.myapplication.data.models.Task
+import com.example.myapplication.data.network.SupabaseClient.client
+import io.github.jan.supabase.postgrest.from
 
 class TaskRepository {
     private var tasks = mutableListOf<Task>()
     private var currentId = 1
 
-    init {
-        tasks.addAll(
-            listOf(
-                Task(
-                    id = currentId++,
-                    title = "Заголовок1",
-                    text = "Mного текста".repeat(20),
-                    expended = true
-                ),
-                Task(
-                    id = currentId++,
-                    title = "Заголовок2",
-                    text = "Очень много текста".repeat(20),
-                    expended = false
-                ),
-                Task(
-                    id = currentId++,
-                    title = "Заголовок3",
-                    text = "ОЧЕНЬ МНОГО ТЕКСТА!!!".repeat(20),
-                    false
-                )
 
 
-            )
-        )
+    suspend fun getTask(taskId: Int): Task?{
+        val task = client.from("Task").select{
+            filter {
+                Task::id gte taskId
+                gte("id", taskId)
+            }
+        }.decodeSingle<Task>()
+        return task
     }
 
-    fun getTask(taskId: Int): Task?{
-        return tasks.find {it.id == taskId }
+
+    suspend fun getAllTasks() : List<Task> {
+        val tasks = client.from("Task").select(
+
+        ).decodeList<Task>()
+        return tasks
     }
 
-    fun getAllTasks() : List<Task> = tasks.toList()
+    suspend fun addTask(task: Task) {
 
-    fun addTask(Task: Task) {
-        tasks.add(Task.copy(id = currentId++))
+        client.from("Task").insert(task)
     }
-    fun deleteTask(id: Int){
-        tasks.removeAll{it.id == id}
-    }
-    fun updateTask(updatedTask: Task){
-        val index = tasks.indexOfFirst { it.id == updatedTask.id }
-        if (index != -1)
-            tasks[index] = updatedTask
-    }
+    suspend fun deleteTask(id: Int) {
+        client.from("Task").delete {
+            filter {
+                Task::id gte id
+                gte("Id", id)
+            }
+        }
+        }
+        suspend fun updateTask(updatedTask: Task) {
+            client.from("Task").update(updatedTask){
+                filter {
+                    eq("Id", updatedTask.id!!)
+                }
+            }
+        }
+
 }

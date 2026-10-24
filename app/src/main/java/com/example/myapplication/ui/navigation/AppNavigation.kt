@@ -36,10 +36,10 @@ fun AppNavigation() {
             )
 
         }
-        composable("TaskEdit"){ backStackEntry ->
+        composable("TaskEdit/{taskId}"){ backStackEntry ->
             TaskEditScreen(
                 navController,
-                TaskEditViewModel(it.repository)
+                TaskEditViewModel(backStackEntry.savedStateHandle, repository)
             )
 
         }

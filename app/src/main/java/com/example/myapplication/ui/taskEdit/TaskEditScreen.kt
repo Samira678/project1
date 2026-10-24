@@ -42,7 +42,7 @@ fun TaskEditScreen(
         }
     }
     Scaffold(
-        topbar = {
+        topBar = {
             TopAppBar(
                 title = {Text("Добавьте новую задачу")}
             )

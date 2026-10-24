@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -28,11 +29,11 @@ fun TaskAddScreen (
     navController: NavController,
     viewModel: TaskAddViewModel
 ){
-    val title by remember{mutableStateOf("")}
-    val text by remember {mutableStateOf("")}
+    var title by remember{mutableStateOf("")}
+    var text by remember {mutableStateOf("")}
 
     Scaffold(
-        topbar = {
+        topBar = {
             TopAppBar(
                 title = {Text("Добавьте новую задачу")}
             )
@@ -70,7 +71,7 @@ fun TaskAddScreen (
                     if (title.isNotBlank() and text.isNotBlank())
                         viewModel.addTask(
                             Task(
-                                id = 0,
+
                                 title = title,
                                 text = text,
                                 expended = false
