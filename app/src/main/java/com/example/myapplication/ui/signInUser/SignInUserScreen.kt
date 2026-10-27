@@ -1,7 +1,11 @@
 package com.example.myapplication.ui.signInUser
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
@@ -28,11 +32,6 @@ fun SignInUserScreen(
     var password by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
 
-    LaunchedEffect(Unit) {
-        viewModel.isUserLoggedIn(context)
-    //        if(viewModel.getToken(context)!=null)
-        //   navController.navigate("TaskList")
-    }
     Column(
         Modifier
             .padding(8.dp)
@@ -44,9 +43,9 @@ fun SignInUserScreen(
             textAlign = TextAlign.Center
         )
         HorizontalDivider(
-                Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth()
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
         )
         OutlinedTextField(
             value = email,
@@ -56,7 +55,7 @@ fun SignInUserScreen(
                 .fillMaxWidth(),
             label = { Text("Email") }
         )
-       // Spacer(Modifier.height(2.dp))
+        Spacer(Modifier.height(2.dp))
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -65,22 +64,38 @@ fun SignInUserScreen(
                 .fillMaxWidth(),
             label = { Text("Password") }
         )
-        Button(
+        Row(
             modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            onClick = {
-                viewModel.signIn(
-                    context = context,
-                    userEmail = email,
-                    userPassword = password
-                )
-                navController.navigate("TaskList")
+                .fillMaxWidth()
+                .padding(top = 10.dp), horizontalArrangement = Arrangement.Center
+        ) {
+            Button(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                onClick = {
+                    viewModel.signInWithEmail(
+                        context = context,
+                        userEmail = email,
+                        userPassword = password
+                    )
+                    navController.navigate("TaskList")
+                }
+            ) {
+                Text("SignIn")
             }
-        )
-        {
-            Text("SignIn")
+            Button(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                onClick = {
+                    navController.navigate("SignUpScreen") {
+                        popUpTo("SignInScreen") { inclusive = true }
+                    }
+                }
+            ) {
+                Text("SignUp")
+            }
         }
     }
 }
-

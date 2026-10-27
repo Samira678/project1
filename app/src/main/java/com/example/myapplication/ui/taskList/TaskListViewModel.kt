@@ -9,18 +9,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class TaskListViewModel (
-    private val repository: TaskRepository = TaskRepository()
-): ViewModel(){
+class TaskListViewModel(
+    private val repository : TaskRepository = TaskRepository()
+) : ViewModel() {
 
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
-    val tasks : StateFlow<List<Task>> = _tasks
+    val tasks : StateFlow<List<Task>> =_tasks
+
     private val _task = MutableStateFlow<Task?>(null)
     val task : StateFlow<Task?> = _task
+
     private var _showAddDialog = MutableStateFlow(false)
     val showAddDialog: StateFlow<Boolean> = _showAddDialog
+
     private var _showDeleteDialog = MutableStateFlow(false)
     val showDeleteDialog: StateFlow<Boolean> = _showDeleteDialog
+
     private var _showUpdateDialog = MutableStateFlow(false)
     val showUpdateDialog: StateFlow<Boolean> = _showUpdateDialog
 
@@ -29,10 +33,10 @@ class TaskListViewModel (
     }
 
     fun switchExpend(switchedTask: Task){
-        _tasks.update {tasks ->
-            tasks.map{
+        _tasks.update { tasks ->
+            tasks.map {
                 if(it.id == switchedTask.id)
-                    it.copy(expended = !it.expended)
+                    it.copy(expanded = !it.expanded)
                 else it
             }
         }
@@ -43,24 +47,26 @@ class TaskListViewModel (
             _tasks.value = repository.getAllTasks()
         }
     }
-    fun addTask(newTask: Task){
+
+    fun addTask(newTask:Task){
         viewModelScope.launch {
             repository.addTask(newTask)
             loadTask()
             hideAddDialog()
         }
     }
-    fun selectTask(task: Task){
+    fun selectTask(task:Task){
         _task.value = task
     }
+
     fun deleteTask(){
         viewModelScope.launch {
-            repository.deleteTask(_task.value!!.id)
+            repository.deleteTask(_task.value!!.id!!)
             loadTask()
-            hideDeletedDialog()
+            hideDeleteDialog()
         }
     }
-    fun editTask(newTask: Task){
+    fun updateTask(newTask: Task){
         viewModelScope.launch {
             repository.updateTask(newTask)
             loadTask()
@@ -70,22 +76,22 @@ class TaskListViewModel (
     fun showAddDialog(){
         _showAddDialog.value = true
     }
-    fun showDeletedDialog(){
+    fun showDeleteDialog(){
         _showDeleteDialog.value = true
     }
     fun showUpdateDialog(){
-        _showDeleteDialog.value = true
+        _showUpdateDialog.value = true
     }
+
     fun hideAddDialog(){
         _showAddDialog.value = false
     }
-    fun hideDeletedDialog(){
+    fun hideDeleteDialog(){
         _showDeleteDialog.value = false
     }
     fun hideUpdateDialog(){
-        _showDeleteDialog.value = false
+        _showUpdateDialog.value = false
     }
-
 
 
 }

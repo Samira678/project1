@@ -29,11 +29,11 @@ import com.example.myapplication.data.models.Task
 fun TaskEditScreen(
     navController: NavController,
     viewModel: TaskEditViewModel
-) {
+){
     val task by viewModel.task.collectAsState()
 
-    var title by remember{mutableStateOf("")}
-    var text by remember{mutableStateOf("")}
+    var title by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
 
     LaunchedEffect(task) {
         task?.let {
@@ -41,41 +41,41 @@ fun TaskEditScreen(
             title = it.title
         }
     }
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {Text("Добавьте новую задачу")}
+                title = { Text("Добавить новую задачу") }
             )
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            Text("Добавитьновую задачу")
+            Text("Добавить новую задачу?")
+
             OutlinedTextField(
                 value = title,
-                onValueChange = {title = it},
-                label = {Text("Название задачи")},
+                onValueChange = { title = it },
+                label = { Text("Название задачи") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(top = 10.dp)
             )
+
             OutlinedTextField(
                 value = text,
-                onValueChange = {text = it},
-                label = {Text("Описание задачи")},
+                onValueChange = { text = it },
+                label = { Text("Описание задачи") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
-                singleLine = false,
-                maxLines = 10
-
+                    .padding(top = 10.dp),
+                singleLine = false
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.Center
-
-            ){
+            ) {
                 TextButton(onClick = {navController.popBackStack()}) {
                     Text("Отмена")
                 }
@@ -84,17 +84,17 @@ fun TaskEditScreen(
                         viewModel.updateTask(
                             Task(
                                 id = task!!.id,
-                                text,
-                                title,
-                                expended = false
+                                text = text,
+                                title = title,
+                                expanded = false
                             )
                         )
                     navController.popBackStack()
-
                 }) {
-                    Text("Добавить")
+                    Text("Изменить")
                 }
             }
         }
     }
+
 }

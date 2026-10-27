@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun DeleteDialog(
-    onDismiss:()->Unit,
-    onDelete:()->Unit
+    onDismiss:()-> Unit,
+    onDelete:() -> Unit
 ){
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = {Text("Вы точно хотите удалить?")},
+        title = { Text("Вы точно хотите удалить?") },
         text = {Text("Вы уверены, что хотите удалить?")},
         dismissButton = {
             TextButton(onClick = onDismiss) {

@@ -25,32 +25,34 @@ import com.example.myapplication.data.models.Task
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskAddScreen (
+fun TaskAddScreen(
     navController: NavController,
     viewModel: TaskAddViewModel
-){
-    var title by remember{mutableStateOf("")}
-    var text by remember {mutableStateOf("")}
+) {
+
+    var title by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {Text("Добавьте новую задачу")}
+                title = { Text("Добавить новую задачу") }
             )
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             OutlinedTextField(
                 value = title,
-                onValueChange = {title = it},
+                onValueChange = { title = it },
+                label = { Text("Заголовок") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
             )
             OutlinedTextField(
                 value = text,
-                onValueChange = {text = it},
-                label = {Text("Текст")},
+                onValueChange = { text = it },
+                label = { Text("Текст") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
@@ -61,30 +63,29 @@ fun TaskAddScreen (
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.Center
-            ){
+            ) {
                 TextButton(onClick = {
                     navController.popBackStack()
                 }){
                     Text("Отмена")
                 }
-                TextButton(onClick ={
+                TextButton(onClick = {
                     if (title.isNotBlank() and text.isNotBlank())
                         viewModel.addTask(
                             Task(
-
                                 title = title,
                                 text = text,
-                                expended = false
+                                expanded = false
                             )
                         )
                     navController.popBackStack()
-                }){
+                }) {
                     Text("Добавить")
                 }
             }
-
         }
 
     }
-
 }
+
+

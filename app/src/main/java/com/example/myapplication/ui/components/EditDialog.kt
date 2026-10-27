@@ -22,49 +22,50 @@ import com.example.myapplication.data.models.Task
 
 @Composable
 fun EditDialog(
-    onDismiss:()->Unit,
-    onUpdate:(Task)->Unit,
+    onDismiss:()-> Unit,
+    onUpdate:(Task)-> Unit,
     updatedTask: Task
 ){
-    var title by remember { mutableStateOf(updatedTask.title)}
-    var text by remember {mutableStateOf(updatedTask.text)}
+    var title by remember { mutableStateOf(updatedTask.title) }
+    var text by remember { mutableStateOf(updatedTask.text) }
 
     Dialog(
-        onDismiss
+        onDismissRequest = onDismiss
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation  = 10.dp)
-        ){
+            elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
+        ) {
             Column() {
-                Text("Добавитьновую задачу")
+                Text("Добавить новую задачу?")
+
                 OutlinedTextField(
                     value = title,
-                    onValueChange = {title = it},
-                    label = {Text("Название задачи")},
+                    onValueChange = { title = it },
+                    label = { Text("Название задачи") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(top = 10.dp)
                 )
+
                 OutlinedTextField(
                     value = text,
-                    onValueChange = {text = it},
-                    label = {Text("Описание задачи")},
+                    onValueChange = { text = it },
+                    label = { Text("Описание задачи") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(top = 10.dp),
                     singleLine = false,
                     maxLines = 3
                 )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.Center
-
-                ){
+                ) {
                     TextButton(onClick = onDismiss) {
                         Text("Отмена")
                     }
@@ -73,12 +74,11 @@ fun EditDialog(
                             onUpdate(
                                 Task(
                                     id = updatedTask.id,
-                                    text,
-                                    title,
-                                    expended = updatedTask.expended
+                                    text = text,
+                                    title = title,
+                                    expanded = updatedTask.expanded
                                 )
                             )
-
                     }) {
                         Text("Добавить")
                     }

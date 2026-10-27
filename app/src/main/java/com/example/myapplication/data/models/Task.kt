@@ -8,13 +8,9 @@ import kotlinx.serialization.Serializable
 data class Task(
     @SerialName("id")
     val id: Int? = null,
-    @SerialName("title")
+    @SerialName("Title")
     var title: String,
-    @SerialName("text")
-    var text: String,
-    @Transient var expended: Boolean = false
-){
-    companion object{
-
-    }
-}
+    @SerialName("Text")
+    var text : String,
+    @Transient var expanded: Boolean = false
+)

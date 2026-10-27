@@ -24,23 +24,22 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 @Composable
 fun SignUpUserScreen(
-navController: NavController,
-viewModel: SignUpViewModel) {
+    navController: NavController,
+    viewModel: SignUpViewModel
+) {
     val context = LocalContext.current
     var password by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    LaunchedEffect(Unit) {
-        viewModel.isUserLoggedIn(context)
-    }
+
     Column(
         Modifier
             .padding(8.dp)
             .fillMaxWidth()
     ) {
         Text(
-        text = "SignUp",
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center
+            text = "SignUp",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
         HorizontalDivider(
             Modifier
@@ -48,12 +47,12 @@ viewModel: SignUpViewModel) {
                 .fillMaxWidth()
         )
         OutlinedTextField(
-                value = email,
-        onValueChange = { email = it },
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
-        label = { Text("Email") }
+            value = email,
+            onValueChange = { email = it },
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            label = { Text("Email") }
         )
         Spacer(Modifier.height(2.dp))
         OutlinedTextField(
@@ -93,6 +92,18 @@ viewModel: SignUpViewModel) {
             ) {
                 Text("Назад")
             }
+        }
+        Button(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            onClick = {
+                navController.navigate("SignInScreen") {
+                    popUpTo("SignUpScreen") { inclusive = true }
+                }
+            }
+        ) {
+            Text("SignIn")
         }
     }
 }

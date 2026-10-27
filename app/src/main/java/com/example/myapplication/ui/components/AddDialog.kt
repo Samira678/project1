@@ -22,55 +22,55 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun AddDialog(
-    onDismiss:() -> Unit,
-    onAddTask : (String, String) -> Unit
-
-){
-    var title by remember { mutableStateOf("")}
-    var text by remember {mutableStateOf("")}
+    onDismiss: () -> Unit,
+    onAddTask: (String, String) -> Unit
+) {
+    var title by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
 
     Dialog(
-        onDismiss
+        onDismissRequest = onDismiss
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation  = 10.dp)
-        ){
+            elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
+        ) {
             Column() {
-                Text("Добавитьновую задачу")
+                Text("Добавить новую задачу?")
+
                 OutlinedTextField(
                     value = title,
-                    onValueChange = {title = it},
-                    label = {Text("Название задачи")},
+                    onValueChange = { title = it },
+                    label = { Text("Название задачи") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(top = 10.dp)
                 )
+
                 OutlinedTextField(
                     value = text,
-                    onValueChange = {text = it},
-                    label = {Text("Описание задачи")},
+                    onValueChange = { text = it },
+                    label = { Text("Описание задачи") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(top = 10.dp),
                     singleLine = false,
                     maxLines = 3
                 )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.Center
-
-                ){
+                ) {
                     TextButton(onClick = onDismiss) {
                         Text("Отмена")
                     }
                     TextButton(onClick = {
                         if(title.isNotBlank() and text.isNotBlank())
-                            onAddTask(title, text)
+                            onAddTask(title,text)
                     }) {
                         Text("Добавить")
                     }
