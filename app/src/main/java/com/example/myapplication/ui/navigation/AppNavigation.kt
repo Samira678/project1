@@ -27,8 +27,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination ="SignInScreen",
-        modifier = modifier
+        startDestination ="SignInScreen"
     ){
         composable("TaskList") {
             TaskListScreen(
